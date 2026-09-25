@@ -187,7 +187,7 @@ git push
 
 ```bash
 # 1. Clonar el repo
-git clone https://github.com/victor220888/guaranisoft-landing.git
+git clone https://github.com/GuaraniSoft/guaranisoft-landing.git
 cd guaranisoft-landing
 
 # 2. Crear venv e instalar
