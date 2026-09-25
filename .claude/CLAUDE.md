@@ -78,7 +78,7 @@ Victor Roman — victor.roman.czu@gmail.com — +595 992 504 620
 
 ## Related repos
 - **ERP:** `/home/victor/erp-system/` (private, local only)
-- **Landing:** this repo — https://github.com/victor220888/guaranisoft-landing
+- **Landing:** this repo — https://github.com/GuaraniSoft/guaranisoft-landing
 
 ## Documentation
 - `docs/GUIA_DEPLOY_RENDER.md` — Step-by-step Render deploy guide

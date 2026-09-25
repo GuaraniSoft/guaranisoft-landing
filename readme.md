@@ -49,6 +49,6 @@ requirements.txt
 `guaranisof.com` — Cloudflare Registrar
 
 ## Stack
-- Python 3.12 / FastAPI / Jinja2
+- Python 3.14 / FastAPI / Jinja2
 - Bootstrap 5 (CDN)
 - aiosmtplib para emails

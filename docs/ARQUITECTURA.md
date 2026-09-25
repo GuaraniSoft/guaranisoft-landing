@@ -1,7 +1,7 @@
 # Arquitectura y Estructura del Proyecto — Landing GuaraníSoft
 
 > Documentación técnica del proyecto de landing page para Ñande ERP / GuaraníSoft
-> Repo: https://github.com/victor220888/guaranisoft-landing
+> Repo: https://github.com/GuaraniSoft/guaranisoft-landing
 
 ---
 
