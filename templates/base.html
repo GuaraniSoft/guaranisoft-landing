@@ -52,14 +52,14 @@
             </div>
             <div class="col-md-6 text-md-end text-center">
                 <a href="mailto:ventas@guaranisof.com" class="me-3">ventas@guaranisof.com</a>
-                <a href="https://wa.me/595992504620" target="_blank" rel="noopener">WhatsApp Directo</a>
+                <a href="{{ wa_url|default('https://wa.me/595992504620') }}" target="_blank" rel="noopener">WhatsApp Directo</a>
             </div>
         </div>
     </div>
 </footer>
 
 <!-- ═══ WhatsApp flotante ═══════════════════════════════════════════════ -->
-<a href="https://wa.me/595992504620" target="_blank" rel="noopener" class="whatsapp-float"
+<a href="{{ wa_url|default('https://wa.me/595992504620') }}" target="_blank" rel="noopener" class="whatsapp-float"
    aria-label="Chatear por WhatsApp">
     <span class="whatsapp-online" aria-hidden="true" title="Disponible"></span>
     <span class="whatsapp-float-tip" aria-hidden="true">{% block whatsapp_tip %}¿Tenés dudas? Escribinos por WhatsApp{% endblock %}</span>

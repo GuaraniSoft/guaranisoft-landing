@@ -18,3 +18,6 @@ docs/审美相关skill/
 outputs/
 projects/
 memory/
+
+# Encargos de copy: se trabajan desde docs/ pero no se versionan
+docs/encargo-2-*.md

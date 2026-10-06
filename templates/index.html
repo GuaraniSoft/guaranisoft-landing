@@ -1,17 +1,18 @@
 ﻿{% extends "base.html" %}
+{% set wa_url = "https://wa.me/595992504620?text=Hola%2C%20estoy%20viendo%20la%20p%C3%A1gina%20de%20%C3%91ande%20ERP%20y%20tengo%20una%20consulta." %}
 
 {% block title %}Ñande ERP — Punto de Venta, Inventario y Contabilidad | GuaraníSoft{% endblock %}
 
 {% block head_extra %}
     <meta name="description" content="Sistema de gestión para PyMEs en Paraguay. Punto de venta rápido, control de stock, cajas y contabilidad. Funciona sin internet.">
     <meta property="og:title" content="Ñande ERP — El sistema que ordena tu empresa">
-    <meta property="og:description" content="Punto de Venta, Inventario y Contabilidad. Soporte local directo y cumplimiento tributario.">
+    <meta property="og:description" content="Punto de venta, stock, cajas y contabilidad. Funciona sin internet y te atiende quien lo programó.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://guaranisof.com/nande-erp">
     <meta property="og:image" content="https://guaranisof.com/static/img/og-image.png?v=2">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ñande ERP — El sistema que ordena tu empresa">
-    <meta name="twitter:description" content="Punto de Venta, Inventario y Contabilidad. Soporte local directo y cumplimiento tributario.">
+    <meta name="twitter:description" content="Punto de venta, stock, cajas y contabilidad. Funciona sin internet y te atiende quien lo programó.">
     <meta name="twitter:image" content="https://guaranisof.com/static/img/og-image.png?v=2">
     <link rel="canonical" href="https://guaranisof.com/nande-erp">
 
@@ -77,23 +78,23 @@
         </nav>
         <div class="hero-grid">
         <div class="hero-copy">
-        <img src="/static/img/logo-eslogan.svg" alt="Ñande ERP — ERP paraguayo. Cumplimiento real. Soporte local."
+        <img src="/static/img/logo-eslogan.svg" alt="Ñande ERP — Hecho en Paraguay. Hecho para Paraguay."
              width="360" height="140" class="img-fluid logo-hero">
         <h1 class="tagline" id="hero-heading">Controlá tu negocio, aunque se corte internet.</h1>
         <p class="subtitle">
-            Ventas, stock, caja y contabilidad conectados, para una o varias empresas,
-            con sus sucursales y depósitos. Y si algo falla, te atiende directo quien lo programó.
+            Ventas, stock, caja y contabilidad en tu computadora, para una o varias empresas.
+            Y si algo falla, te atiende directo quien lo programó.
         </p>
         <div class="hero-prueba-gratis fade-in">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
             1 mes de prueba sin costo alguno, sin compromiso
         </div>
         <div class="hero-acciones">
-            <a href="#contacto" class="btn btn-morado">Solicitar demo</a>
-            <a href="https://wa.me/595992504620" target="_blank" rel="noopener" class="btn btn-verde">
+            <a href="https://wa.me/595992504620?text=Hola%2C%20quiero%20probar%20%C3%91ande%20ERP%20un%20mes%20sin%20costo.%20Mi%20negocio%20es%3A%20" target="_blank" rel="noopener" class="btn btn-verde">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right: 0.5rem; vertical-align: -3px;"><use href="#icon-whatsapp"/></svg>
                 Hablar por WhatsApp
             </a>
+            <a href="#contacto" class="btn btn-outline-morado">Solicitar demo</a>
         </div>
         </div>
         <div class="hero-screenshot fade-in">
@@ -132,7 +133,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12 L9 16 L19 6"/><circle cx="12" cy="12" r="10"/></svg>
                 </div>
                 <h3>Sin depender de internet</h3>
-                <p>Tu operación sigue aunque se corte la conexión.</p>
+                <p>El sistema corre en tu computadora: en tu local seguís vendiendo aunque se corte internet.</p>
             </div>
             <div class="pilar fade-in">
                 <div class="pilar-icon">
@@ -146,7 +147,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5 C21 16 17 19 12 19 C10.5 19 9 18.7 7.7 18.2 L3 19 L4.3 15.5 C3.5 14.4 3 13 3 11.5 C3 7 7 4 12 4 C17 4 21 7 21 11.5 Z"/></svg>
                 </div>
                 <h3>Soporte directo del que lo programó</h3>
-                <p>WhatsApp directo, sin bots ni call center. Nos escribís y te respondemos.</p>
+                <p>WhatsApp directo, sin bots ni call center. Me escribís y te respondo yo.</p>
             </div>
         </div>
     </div>
@@ -182,7 +183,7 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 V22"/><path d="M8 6 Q12 3 16 6"/><path d="M8 11 Q12 8 16 11"/><path d="M8 16 Q12 13 16 16"/><circle cx="12" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>
                     </div>
                     <h3>¿Vendés todos los días pero no sabés exactamente cuánto ganaste?</h3>
-                    <p>Reportes claros de ventas, gastos y rentabilidad por producto, categoría y período. Sin planillas, sin cálculos manuales.</p>
+                    <p>Reportes claros de ventas, gastos y rentabilidad por producto y por período. Sin planillas, sin cálculos manuales.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 fade-in">
@@ -227,8 +228,11 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 L21 12"/><path d="M15 6 L21 12 L15 18"/></svg>
                     </div>
                     <h3>¿Listo para tomar el control?</h3>
-                    <p>Agendá una demo y descubrí en 15 minutos dónde Ñande ERP puede ayudarte a ganar tiempo y dinero.</p>
-                    <a href="#contacto" class="btn btn-morado btn-sm mt-2">Solicitar demo</a>
+                    <p>Contame cómo trabajás hoy y te muestro el sistema funcionando.</p>
+                    <a href="https://wa.me/595992504620?text=Hola%2C%20quiero%20ver%20una%20demo%20de%20%C3%91ande%20ERP.%20Mi%20negocio%20es%3A%20" target="_blank" rel="noopener" class="btn btn-verde btn-sm mt-2">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:0.5rem;vertical-align:-3px;"><use href="#icon-whatsapp"/></svg>
+                        Pedí tu demo por WhatsApp
+                    </a>
                 </div>
             </div>
         </div>
@@ -240,7 +244,7 @@
     <div class="container">
         <div class="section-title fade-in" data-antetitulo="Qué incluye">
             <h2 id="modulos-heading">Módulos clave para tu empresa</h2>
-            <p>Empezá por ordenar tu mostrador y tu depósito, nosotros nos encargamos del resto.</p>
+            <p>Empezá por el mostrador y el depósito. Lo demás lo sumás cuando lo necesites.</p>
         </div>
 
         <div class="row g-4 stagger-children">
@@ -251,7 +255,7 @@
                     </div>
                     <div>
                     <h3>Punto de Venta y Facturación</h3>
-                    <p>Velocidad extrema en mostrador. Carga rápida para tus operadores, conexión directa con inventario y múltiples métodos de cobro.</p>
+                    <p>Cargás la venta rápido y cada una descuenta el stock en el momento. Imprimís factura A4 o ticket de 80 mm con tu timbrado. La factura electrónica se suma a pedido.</p>
                     </div>
                 </div>
             </div>
@@ -270,7 +274,7 @@
                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="16" width="36" height="20" rx="3"/><circle cx="24" cy="26" r="5" style="stroke:#4A7C59"/><circle cx="24" cy="26" r="2" fill="#4A7C59" stroke="none"/><circle cx="12" cy="22" r="1.5" fill="currentColor" stroke="none"/><circle cx="36" cy="30" r="1.5" fill="currentColor" stroke="none"/><line x1="12" y1="30" x2="16" y2="30"/><line x1="32" y1="22" x2="36" y2="22"/></svg>
                     </div>
                     <h3>Gestión de Cajas</h3>
-                    <p>Terminá con los faltantes. Panel de control detallado, aperturas, movimientos, verificación, arqueo ciego y cierre del día.</p>
+                    <p>Al cerrar sabés si falta o sobra plata. Aperturas, movimientos, arqueo ciego y cierre del día. También cobrás en otras monedas, con la cotización que cargás en la caja.</p>
                 </div>
             </div>
             <div class="col-md-4 fade-in">
@@ -279,7 +283,7 @@
                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L8 40 L24 42 L40 40 L40 8 L24 10 Z"/><line x1="24" y1="10" x2="24" y2="42"/><line x1="12" y1="16" x2="20" y2="16" style="stroke:#4A7C59"/><line x1="12" y1="21" x2="20" y2="21" style="stroke:#4A7C59"/><line x1="12" y1="26" x2="20" y2="26" style="stroke:#4A7C59"/><line x1="12" y1="31" x2="20" y2="31" style="stroke:#4A7C59"/><line x1="28" y1="16" x2="36" y2="16" style="stroke:#4A7C59"/><line x1="28" y1="21" x2="36" y2="21" style="stroke:#4A7C59"/><line x1="28" y1="26" x2="36" y2="26" style="stroke:#4A7C59"/><line x1="28" y1="31" x2="36" y2="31" style="stroke:#4A7C59"/></svg>
                     </div>
                     <h3>Contabilidad Automática</h3>
-                    <p>Tus operaciones diarias generan la contabilidad solas. Plan de cuentas, asientos automáticos, ejercicios fiscales y reportes.</p>
+                    <p>Cada venta, compra, cobro, pago, nota de crédito, ajuste de stock y cuota de préstamo genera su asiento solo. El plan de cuentas viene cargado, con libro diario, mayor y cierre de ejercicio.</p>
                 </div>
             </div>
         </div>
@@ -290,7 +294,7 @@
             <ul class="modulos-extra-lista fade-in">
                 <li>
                     <span class="feature-icon-sm"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="24" y1="6" x2="24" y2="42"/><line x1="14" y1="42" x2="34" y2="42"/><line x1="8" y1="14" x2="40" y2="14"/><path d="M3 22 L13 22 L11 27 L5 27 Z" style="stroke:#4A7C59"/><line x1="40" y1="14" x2="40" y2="22"/><path d="M35 22 L45 22 L43 27 L37 27 Z" style="stroke:#4A7C59"/><circle cx="24" cy="10" r="3"/></svg></span>
-                    <span><strong>Tributario y Fiscal</strong>IRE, IDU, IRP (Ley 6380/2019), retenciones, Marangatú. Tus números claros para la DNIT.</span>
+                    <span><strong>Tributario y Fiscal</strong>Libro IVA en pantalla y PDF, liquidación de IRE (General, SIMPLE y RESIMPLE) e IDU, y registro de retenciones. El sistema te da los montos; la declaración se carga en Marangatú.</span>
                 </li>
                 <li>
                     <span class="feature-icon-sm"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6 L12 42 L24 38 L36 42 L36 6 L24 10 L12 6 Z"/><line x1="17" y1="18" x2="31" y2="18"/><line x1="17" y1="24" x2="31" y2="24"/></svg></span>
@@ -298,15 +302,15 @@
                 </li>
                 <li>
                     <span class="feature-icon-sm"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="8"/><line x1="13" y1="30" x2="13" y2="24" stroke-width="3"/><line x1="20" y1="30" x2="20" y2="18" stroke-width="3"/><line x1="27" y1="30" x2="27" y2="21" style="stroke:#4A7C59" stroke-width="3"/><line x1="34" y1="30" x2="34" y2="14" style="stroke:#4A7C59" stroke-width="3"/><line x1="10" y1="34" x2="38" y2="34"/></svg></span>
-                    <span><strong>Dashboard e Indicadores</strong>Tableros visuales: ventas del día, top productos, flujo de caja. Decisiones con datos reales.</span>
+                    <span><strong>Dashboard e Indicadores</strong>Ventas del día, margen, caja disponible, cuentas por cobrar y por pagar, y alertas de stock en una sola pantalla.</span>
                 </li>
                 <li>
                     <span class="feature-icon-sm"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="4" width="24" height="40" rx="4"/><rect x="16" y="8" width="16" height="8" rx="2" style="stroke:#4A7C59"/><circle cx="18" cy="22" r="1.5" fill="currentColor" stroke="none"/><circle cx="24" cy="22" r="1.5" fill="currentColor" stroke="none"/><circle cx="30" cy="22" r="1.5" fill="currentColor" style="fill:#4A7C59" stroke="none"/></svg></span>
-                    <span><strong>Préstamos Internos</strong>Amortización, intereses, cuotas. Ideal si ofrecés financiamiento a clientes o empleados.</span>
+                    <span><strong>Préstamos</strong>Otorgados o recibidos: sistema francés, alemán o a medida, cuadro de amortización en PDF y asiento automático de cada cuota.</span>
                 </li>
                 <li>
                     <span class="feature-icon-sm"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16 L40 16 L37 42 L11 42 Z"/><path d="M18 16 V12 a6 6 0 0 1 12 0 V16" style="stroke:#4A7C59"/><line x1="18" y1="26" x2="30" y2="26"/></svg></span>
-                    <span><strong>Tienda online</strong>Módulo opcional: publicás tu catálogo en <a href="/nande-tienda">Ñande Tienda</a> y los pedidos web vuelven al ERP con stock reservado y venta registrada.</span>
+                    <span><strong>Tienda online</strong>Módulo opcional: tu catálogo, precios y stock se publican en <a href="/nande-tienda">Ñande Tienda</a> y los pedidos web llegan a tu ERP solos.</span>
                 </li>
             </ul>
             <div class="modulos-extra-note">
@@ -332,8 +336,7 @@
 <section class="casos-uso section-compact" id="casos-uso" aria-labelledby="casos-uso-heading">
     <div class="container">
         <div class="section-title fade-in" data-antetitulo="Rubros">
-            <h2 id="casos-uso-heading">Ñande ERP se adapta a tu rubro</h2>
-            <p>Así se usa en tu rubro</p>
+            <h2 id="casos-uso-heading">Así se usa en tu negocio</h2>
         </div>
         <div class="row g-4 stagger-children">
             <div class="col-md-6 col-lg-4 fade-in">
@@ -342,7 +345,7 @@
                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="32" height="24" rx="3"/><line x1="8" y1="22" x2="40" y2="22"/><line x1="16" y1="22" x2="16" y2="14"/><line x1="26" y1="22" x2="26" y2="14"/><circle cx="34" cy="30" r="4" style="stroke:#4A7C59"/><circle cx="34" cy="30" r="1.5" fill="#4A7C59" stroke="none"/><line x1="8" y1="36" x2="40" y2="36"/></svg>
                     </div>
                     <h3>Si tenés una ferretería…</h3>
-                    <p>Controlá stock de miles de artículos, manejá ventas por mostrador y cuenta corriente de clientes sin perderle el rastro a nada.</p>
+                    <p>Stock de miles de artículos, venta rápida en el mostrador y cuenta corriente con límite y días de crédito por cliente.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 fade-in">
@@ -350,8 +353,8 @@
                     <div class="feature-icon-sm">
                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="6" width="28" height="36" rx="4"/><line x1="16" y1="14" x2="32" y2="14" style="stroke:#4A7C59"/><line x1="16" y1="20" x2="32" y2="20" style="stroke:#4A7C59"/><line x1="16" y1="26" x2="32" y2="26" style="stroke:#4A7C59"/><line x1="16" y1="32" x2="24" y2="32" style="stroke:#4A7C59"/><circle cx="34" cy="38" r="2" fill="#4A7C59" stroke="none"/><path d="M24 42 L24 48" style="stroke:#4A7C59"/></svg>
                     </div>
-                    <h3>Si manejás una farmacia…</h3>
-                    <p>Control de lotes y vencimientos, múltiples métodos de pago, cierre de caja diario y trazabilidad total de cada producto.</p>
+                    <h3>Si tenés varios locales…</h3>
+                    <p>Cada sucursal con su punto de emisión y su depósito, traslados entre depósitos y el stock de todos en el mismo sistema. Las sucursales de otra ciudad se conectan por internet.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 fade-in">
@@ -360,9 +363,23 @@
                         <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="40" height="28" rx="3"/><path d="M4 20 L44 20"/><polygon points="24,12 20,34 28,34" style="stroke:#4A7C59"/><circle cx="12" cy="30" r="2" style="stroke:#4A7C59"/><circle cx="16" cy="16" r="2" fill="#4A7C59" stroke="none"/><line x1="4" y1="34" x2="44" y2="34"/></svg>
                     </div>
                     <h3>Si tenés una distribuidora…</h3>
-                    <p>Manejá multimoneda, descuentos por cliente, cuentas por cobrar y controlá márgenes por producto al instante.</p>
+                    <p>Vendés a crédito con límite por cliente, ves quién te debe y hace cuántos días, y hacés descuentos en cada línea de la factura.</p>
                 </div>
             </div>
+        </div>
+        <div class="modulos-extra-note fade-in">
+            <p>
+                <strong>Para tu contador</strong>
+            </p>
+            <p class="mb-1">
+                Cada venta, compra, cobro y pago genera su asiento solo. A tu contador le pasás el
+                libro diario y mayor, el Libro IVA y la liquidación de IRE e IDU, con los montos
+                listos para cargar en Marangatú.
+            </p>
+            <a href="https://wa.me/595992504620?text=Hola%20Victor%2C%20soy%20contador%20y%20quiero%20conocer%20%C3%91ande%20ERP." target="_blank" rel="noopener" class="btn btn-verde btn-sm mt-2">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:0.5rem;vertical-align:-3px;"><use href="#icon-whatsapp"/></svg>
+                ¿Sos contador? Escribime
+            </a>
         </div>
     </div>
 </section>
@@ -372,28 +389,28 @@
     <div class="container">
         <div class="section-title fade-in" data-antetitulo="Cómo funciona">
             <h2 id="como-funciona-heading">Tu puesta en marcha</h2>
-            <p>Acompañamiento personalizado 1 a 1 para asegurar tu éxito</p>
+            <p>Te lo instalo, te capacito y te acompaño mientras arrancás.</p>
         </div>
         <div class="row stagger-children">
             <div class="col-md-4 fade-in">
                 <div class="paso">
                     <span class="num">1</span>
                     <h3>Nos conocemos</h3>
-                    <p>Agendás una demo, nos contás cómo funciona tu negocio y vemos juntos si somos el ajuste perfecto.</p>
+                    <p>Me contás cómo trabaja tu negocio, te muestro el sistema y vemos juntos si te sirve.</p>
                 </div>
             </div>
             <div class="col-md-4 fade-in">
                 <div class="paso paso--realce">
                     <span class="num">2</span>
-                    <h3>Instalación Segura</h3>
-                    <p>Instalamos el software de forma local en tu computadora. Tus datos son 100% privados, con backup automático y opción de respaldo en la nube. Si se corta internet no parás: seguís cargando ventas.</p>
+                    <h3>Instalación en tu computadora</h3>
+                    <p>Lo instalo en tu computadora con Windows y las demás computadoras y celulares de tu local entran desde el navegador. Tus datos quedan en tu computadora, no en un servidor ajeno, con una copia automática todos los días. Si se corta internet, en tu local seguís cargando ventas.</p>
                 </div>
             </div>
             <div class="col-md-4 fade-in">
                 <div class="paso">
                     <span class="num">3</span>
-                    <h3>Acompañamiento Total</h3>
-                    <p>Te capacitamos a vos y a tu equipo. Línea directa con el desarrollador para asegurar que el sistema potencie tu forma de trabajar.</p>
+                    <h3>Acompañamiento</h3>
+                    <p>Te capacito a vos y a tu equipo. Cualquier duda, me escribís por WhatsApp a mí, que lo programé.</p>
                 </div>
             </div>
         </div>
@@ -434,6 +451,10 @@
                         me escribís por WhatsApp al +595 992 504 620 y te respondo directo.
                         Si algo no funciona, lo resolvemos. Si necesitás una función nueva, la vemos juntos.
                     </p>
+                    <p class="mb-0 mt-3">
+                        <strong>Te atiendo</strong> de lunes a viernes de 8:00 a 12:00 y de 13:30 a 17:00,
+                        y los sábados de 8:00 a 12:00. En ese horario te respondo en unos 30 minutos.
+                    </p>
                     <a href="https://wa.me/595992504620?text=Hola%20Victor%2C%20tengo%20una%20consulta%20sobre%20%C3%91ande%20ERP." target="_blank" rel="noopener" class="btn btn-outline-morado btn-sm mt-3">Escribime por WhatsApp</a>
                 </div>
             </div>
@@ -462,8 +483,10 @@
                 <li>
                     <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     <strong>Soporte mensual, mientras lo necesites.</strong> Incluye soporte por WhatsApp
-                    directo con quien programó el sistema y las actualizaciones. Los primeros meses te
-                    conviene tenerlo. Cuando ya te manejás solo, lo cortás y el sistema sigue siendo tuyo.
+                    directo con quien programó el sistema y las actualizaciones. De lunes a viernes de
+                    8:00 a 12:00 y de 13:30 a 17:00, y sábados de 8:00 a 12:00, con respuesta en unos
+                    30 minutos. Los primeros meses te conviene tenerlo. Cuando ya te manejás solo, lo
+                    cortás y el sistema sigue siendo tuyo.
                 </li>
                 <li>
                     <svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
@@ -539,7 +562,7 @@
                 </h3>
                 <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Todas las que necesites: <strong>las computadoras y los depósitos no suman costo</strong>. El precio cambia solo según cuántas empresas y sucursales manejás.
+                        Todas las que necesites: las demás computadoras, celulares y tablets de tu local entran desde el navegador. <strong>Las computadoras y los depósitos no suman costo</strong>; el precio cambia solo según cuántas empresas y sucursales manejás.
                     </div>
                 </div>
             </div>
@@ -557,13 +580,25 @@
             </div>
             <div class="accordion-item">
                 <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2c">
+                        ¿Y si tengo una sucursal en otra ciudad?
+                    </button>
+                </h3>
+                <div id="faq2c" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Se conecta por internet a la computadora principal, donde corre el sistema. Esa sucursal <strong>necesita internet</strong> para trabajar; el local donde está la computadora principal sigue funcionando aunque se corte.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h3 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
                         ¿Qué pasa con mis datos si se rompe o roban la computadora?
                     </button>
                 </h3>
                 <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Ñande ERP hace <strong>backup automático</strong> de tu información, con opción de respaldo en la nube. Si pasa algo con tu equipo, restauramos tus datos en la computadora nueva y seguís trabajando.
+                        Ñande ERP hace <strong>una copia automática todos los días</strong> en tu computadora. Para que también te salve si se rompe o te la roban, en la instalación te enseño a guardar esa copia fuera de la PC, en un pendrive o en tu correo. Con esa copia, restauro tus datos en la computadora nueva.
                     </div>
                 </div>
             </div>
@@ -575,7 +610,7 @@
                 </h3>
                 <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Sí, <strong>evaluamos tu caso en la demo</strong>: productos, clientes y saldos iniciales se pueden migrar desde tus planillas. Según la complejidad, la migración puede tener un costo adicional que te confirmamos antes de empezar.
+                        Sí, <strong>como parte de la instalación</strong>: me pasás tus planillas y yo cargo productos, clientes y saldos iniciales. Según cuánto haya que ordenar, puede tener un costo aparte que te paso por escrito antes de empezar.
                     </div>
                 </div>
             </div>
@@ -599,7 +634,7 @@
                 </h3>
                 <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        No. El sistema corre <strong>en tu computadora</strong>: si se corta internet, seguís vendiendo normalmente.
+                        No. El sistema corre <strong>en tu computadora</strong> y las demás cajas de tu local se conectan por la red del local: si se corta internet, seguís vendiendo normalmente. Solo una sucursal en otra ciudad necesita internet para conectarse.
                     </div>
                 </div>
             </div>
@@ -611,7 +646,7 @@
                 </h3>
                 <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Sí. Con el módulo <strong>Tienda online</strong> tu catálogo, precios y stock se publican en <a href="/nande-tienda">Ñande Tienda</a>, y cada pedido web vuelve al ERP con el stock reservado y la venta registrada. Es un producto aparte, con su propio plan.
+                        Sí. Con el módulo <strong>Tienda online</strong>, tu catálogo, precios y stock se publican en <a href="/nande-tienda">Ñande Tienda</a> y los pedidos web llegan a tu ERP solos. Si la tienda no responde, tu ERP sigue facturando igual. Es un producto aparte y se cotiza junto con tu ERP.
                     </div>
                 </div>
             </div>
@@ -672,7 +707,7 @@
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24" fill="currentColor"><use href="#icon-whatsapp"/></svg>
-                            <a href="https://wa.me/595992504620" target="_blank" rel="noopener">+595 992 504 620</a>
+                            <a href="https://wa.me/595992504620?text=Hola%2C%20estoy%20viendo%20la%20p%C3%A1gina%20de%20%C3%91ande%20ERP%20y%20tengo%20una%20consulta." target="_blank" rel="noopener">+595 992 504 620</a>
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
