@@ -1,9 +1,10 @@
 ﻿{% extends "base.html" %}
+{% set wa_url = "https://wa.me/595992504620?text=Hola%2C%20estoy%20viendo%20la%20p%C3%A1gina%20de%20Guaran%C3%ADSoft%20y%20tengo%20una%20consulta." %}
 
 {% block title %}GuaraníSoft — Software para empresas paraguayas{% endblock %}
 
 {% block head_extra %}
-    <meta name="description" content="GuaraníSoft desarrolla software de gestión para PyMEs paraguayas. Creadores de Ñande ERP (punto de venta, inventario, cajas y contabilidad con cumplimiento fiscal paraguayo) y Ñande Tienda, la tienda online conectada al ERP.">
+    <meta name="description" content="GuaraníSoft desarrolla software de gestión para PyMEs paraguayas. Creadores de Ñande ERP (punto de venta, stock, cajas y contabilidad que funciona sin internet) y Ñande Tienda, la tienda online conectada al ERP.">
     <meta property="og:title" content="GuaraníSoft — Software para empresas paraguayas">
     <meta property="og:description" content="Creadores de Ñande ERP y Ñande Tienda. Hecho en Paraguay. Hecho para Paraguay.">
     <meta property="og:type" content="website">
@@ -61,17 +62,17 @@
 <section class="hero corp-hero" id="top" aria-labelledby="hero-heading">
     <div class="container">
         <p class="corp-hero-wordmark" aria-hidden="true">Guaraní<span>Soft</span></p>
-        <h1 class="tagline" id="hero-heading">Software para empresas paraguayas</h1>
+        <h1 class="tagline" id="hero-heading">Diseñamos para el comerciante que atiende en el mostrador.</h1>
         <p class="subtitle">
-            Desarrollamos sistemas de gestión pensados para la realidad comercial
-            y fiscal de Paraguay. <strong>Hecho en Paraguay. Hecho para Paraguay.</strong>
+            Ñande ERP ordena tus ventas, stock, caja y contabilidad.
+            Lo pagás una sola vez y es tuyo.
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="/nande-erp" class="btn btn-morado">Conocé Ñande ERP</a>
-            <a href="https://wa.me/595992504620" target="_blank" rel="noopener" class="btn btn-verde">
+            <a href="https://wa.me/595992504620?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20Guaran%C3%ADSoft%20y%20quiero%20saber%20si%20%C3%91ande%20ERP%20me%20sirve.%20Mi%20negocio%20es%3A%20" target="_blank" rel="noopener" class="btn btn-verde">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right: 0.5rem; vertical-align: -3px;"><use href="#icon-whatsapp"/></svg>
                 Hablar por WhatsApp
             </a>
+            <a href="/nande-erp" class="btn btn-outline-morado">Conocé Ñande ERP</a>
         </div>
     </div>
 </section>
@@ -137,9 +138,8 @@
                     <p class="donde-estamos-lugar">Caaguazú, Paraguay</p>
                     <p class="donde-estamos-telefono">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:0.35rem;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.1 2h3a2 2 0 011.97 1.67 12.7 12.7 0 00.7 2.81 1 1 0 01-.23 1.11L8 9.14a16 16 0 006.86 6.86l1.56-1.54a1 1 0 011.11-.23 12.7 12.7 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                        <a href="https://wa.me/595992504620" target="_blank" rel="noopener">+595 992 504 620</a>
+                        <a href="https://wa.me/595992504620?text=Hola%2C%20estoy%20viendo%20la%20p%C3%A1gina%20de%20Guaran%C3%ADSoft%20y%20tengo%20una%20consulta." target="_blank" rel="noopener">+595 992 504 620</a>
                     </p>
-                    <p class="donde-estamos-desc">Atendemos a PyMEs de todo Paraguay de forma remota.</p>
                 </div>
             </div>
         </div>
@@ -154,10 +154,10 @@
             <p>El sistema que ordena tu empresa, y la tienda que lo abre a la web</p>
         </div>
         <div class="corp-producto-card fade-in">
-            <img src="/static/img/logo-eslogan.svg" alt="Ñande ERP — ERP paraguayo. Cumplimiento real. Soporte local."
+            <img src="/static/img/logo-eslogan.svg" alt="Ñande ERP — Hecho en Paraguay. Hecho para Paraguay."
                  width="360" height="140" loading="lazy" class="corp-producto-logo">
             <p class="corp-producto-desc">
-                El sistema de gestión integral que ordena tu empresa. Pensado para PyMEs paraguayas, con cumplimiento fiscal local y soporte directo.
+                Punto de venta, stock, caja, contabilidad automática y liquidación de impuestos, en tu computadora y con soporte directo de quien lo programó.
             </p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
                 <a href="/nande-erp" class="btn btn-morado">Ver Ñande ERP</a>
@@ -168,7 +168,7 @@
         <!-- Ñande Tienda: canal web del ERP -->
         <div class="corp-producto-card corp-producto-tienda mt-4 fade-in">
             <a class="tienda-wordmark justify-content-center mb-3" href="/nande-tienda" aria-label="Ñande Tienda">
-                <img src="/static/img/marca-n.svg" alt="" aria-hidden="true" width="26" height="34">
+                <img src="/static/img/marca-n.svg" alt="Ñ" aria-hidden="true" width="26" height="34">
                 <span class="tienda-wordmark-texto">ande <span>Tienda</span></span>
             </a>
             <p class="corp-producto-desc">
@@ -203,7 +203,7 @@
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24" fill="currentColor"><use href="#icon-whatsapp"/></svg>
-                            <a href="https://wa.me/595992504620" target="_blank" rel="noopener">+595 992 504 620</a>
+                            <a href="https://wa.me/595992504620?text=Hola%2C%20estoy%20viendo%20la%20p%C3%A1gina%20de%20Guaran%C3%ADSoft%20y%20tengo%20una%20consulta." target="_blank" rel="noopener">+595 992 504 620</a>
                         </li>
                     </ul>
                     <hr class="my-3">
