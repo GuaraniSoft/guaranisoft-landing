@@ -364,22 +364,25 @@ Se cotiza junto con tu Ñande ERP, según tu negocio. Hay dos formas: en la nube
 
 ---
 
-## Pendientes de Victor (no publicar hasta que los confirme)
+## Estado de los pendientes (al 06/10/2026)
 
-- **Archivo del Registro de Comprobantes para Marangatú:** no agregarlo hasta una subida real aceptada. Texto previsto: "Genera el archivo del Registro de Comprobantes para subir a Marangatú."
-- **Ñande Tienda:** el lado ERP ya está verificado (publicar catálogo, precios y stock; "disponible" desde el stock real; pedido web que reserva stock y queda como venta; el ERP sigue facturando si la tienda no responde). Falta verificar contra el repo `nande-tienda` lo que es puramente de la Tienda: fotos en ZIP por código de barras, panel desde el celular, mensajes de WhatsApp ya escritos, productos sin foto con tu color y publicar con un clic. Lo que no se confirme, se saca.
-- **Opción "la tienda en tu computadora":** confirmar con el agente de la Tienda que está implementada. El ERP no tiene IP pública (por eso es él quien llama a la Tienda), así que la opción local depende del túnel de Cloudflare que ya está documentado; sin ese túnel no habría tienda accesible desde internet.
+### Abierto — depende del repo `nande-tienda`
 
-- **Imagen del hero:** reemplazar `/static/img/dashboard.png` por una captura con datos de ejemplo y la leyenda "Pantalla real del sistema, con datos de ejemplo".
-- **Farmacia** vuelve como rubro cuando existan las tres cosas que hoy faltan (verificado en el ERP el 06/10/2026): alta de lote (no hay forma de cargar un lote ni un vencimiento desde la app), pantalla de lotes y alerta de vencimiento. La tabla `lote_producto`, el costeo específico y el selector FEFO ya existen: falta la punta visible.
-- Reescritura del hero de la página corporativa.
+- **Promesas propias de la Tienda:** fotos en ZIP por código de barras, panel desde el celular, mensajes de WhatsApp ya escritos, productos sin foto con tu color y publicar con un clic. Las tiene que confirmar el agente de ese repo; lo que no se confirme, se saca de la página. El lado ERP ya está verificado: publicar catálogo, precios y stock; "disponible" desde el stock real; pedido web que reserva stock y queda como venta; y el ERP sigue facturando aunque la tienda no responda.
 
-**Cerrados el 06/10/2026 con el código del ERP a la vista:**
+### Aplazado — no bloquea nada, se retoma en las pruebas con clientes
 
+- **Archivo del Registro de Comprobantes para Marangatú.** No se publica hasta una subida real aceptada. Texto previsto: "Genera el archivo del Registro de Comprobantes para subir a Marangatú."
+- **Imagen del hero.** Hoy se usa `/static/img/dashboard.png`. La idea es una captura real con datos de ejemplo y la leyenda "Pantalla real del sistema, con datos de ejemplo", pero todavía no hay un ambiente con datos cargados para sacarla.
+- **Farmacia** vuelve como rubro cuando existan las tres cosas que faltan (verificado en el ERP el 06/10/2026): alta de lote — no hay forma de cargar un lote ni un vencimiento desde la app —, pantalla de lotes y alerta de vencimiento. La tabla `lote_producto`, el costeo específico y el selector FEFO ya existen: falta la punta visible.
+- **Reescritura del hero de la página corporativa.**
+
+### Cerrados el 06/10/2026
+
+- **Horario de atención y tiempo de respuesta.** Lunes a viernes de 8:00 a 12:00 y de 13:30 a 17:00, sábados de 8:00 a 12:00, con respuesta en unos 30 minutos. Publicado en "¿Quién te atiende?" y en "Soporte mensual".
 - **IRP — queda afuera del sitio, definitivamente.** El liquidador aplica 10 % plano sobre servicios y 8 % plano sobre capital, sin escala por tramos. Además las retenciones se suman sin distinguir categoría, y el propio código lo marca como trabajo pendiente. La única lógica de tramos del ERP es la escala del RESIMPLE, que es del IRE.
-- **Rentabilidad por categoría — no existe.** Hay margen por producto (y margen bruto, top productos, sin rotación, reposición sugerida), pero ningún reporte de margen agrupa por categoría. Por eso la pregunta 1 ahora dice "por producto y por período". Si algún día se agrega el corte por categoría, vuelve la palabra.
-
-**Resuelto el 06/10/2026:** horario de atención y tiempo de respuesta (lunes a viernes 8:00-12:00 y 13:30-17:00, sábados 8:00-12:00, respuesta en ~30 minutos), ya publicado en "¿Quién te atiende?" y en "Soporte mensual".
+- **Rentabilidad por categoría — no existe.** Hay margen por producto (y margen bruto, top productos, sin rotación, reposición sugerida), pero ningún reporte de margen agrupa por categoría. Por eso la pregunta 1 dice "por producto y por período". Si algún día se agrega el corte por categoría, vuelve la palabra.
+- **Opción "la tienda en tu computadora" — verificada por Victor en su ambiente de producción.** Queda pendiente solo el deploy acá, junto con el agente de la Tienda. El ERP no tiene IP pública (por eso es él quien llama a la Tienda): la opción local funciona por el túnel de Cloudflare ya documentado.
 
 ## Condiciones fuera del sitio (dependen del ERP, no de la landing)
 
