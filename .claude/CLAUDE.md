@@ -63,7 +63,7 @@ ADMIN_PASSWORD=change_this
 
 ## Known issues
 - **Render blocks SMTP port 587** — emails don't send in production. Leads still save to Google Sheets. Need alternative: SendGrid free, Mailgun, or similar.
-- **Render Free cold start** — first request after idle takes 30-50s. Not fixable on free tier.
+- **Render Free cold start** — Render apaga el servicio tras 15 min sin tráfico y el siguiente visitante espera 30-50s. Mitigado con un ping externo a `/health` cada 10 min, de 7:15 a 21:00 (hora PY): ver `docs/GUIA_MANTENER_DESPIERTO_RENDER.md`. Fuera de esa ventana el arranque sigue existiendo. **Ojo:** el workspace tiene 750 horas Free por mes y, si se agotan, Render suspende todos los servicios Free hasta el mes siguiente.
 - **SQLite not persistent** — Render Free disk is ephemeral. Google Sheets is the primary store.
 - **Rate limit is in-memory** — resets on app restart. Not a problem for low traffic.
 
@@ -83,6 +83,7 @@ Victor Roman — victor.roman.czu@gmail.com — +595 992 504 620
 ## Documentation
 - `docs/GUIA_DEPLOY_RENDER.md` — Step-by-step Render deploy guide
 - `docs/GUIA_DNS_CLOUDFLARE_RENDER.md` — DNS configuration guide
+- `docs/GUIA_MANTENER_DESPIERTO_RENDER.md` — Por qué el sitio se duerme, el límite de 750 horas y el ping que lo mantiene despierto
 - `docs/ARQUITECTURA.md` — Full architecture documentation
 - `content.md` — Content source of truth de la landing del ERP (features, sections); Ñande Tienda se documenta en `/home/victor/nande-tienda/docs/`
 
