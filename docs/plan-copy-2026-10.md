@@ -70,7 +70,7 @@ Las líneas son las del estado inicial de la rama (commit base `e9079d8`) y se c
 - [x] 8.1 L85-108 las 4 cifras → 3: "Sin internet / Seguís vendiendo aunque se corte la conexión", "0 call centers / Te responde quien lo programó", "1 mes de prueba / Sin costo, en tu negocio" · **duda C** (clases de grilla)
 - [x] 8.2 L44 (menú) y L117 (h2): "Quiénes somos" → "Quién está detrás" (el ancla `#quienes-somos` se deja para no romper links)
 - [x] 8.2 L127-144 h3 "Lic. Victor Román — Fundador" + 3 párrafos → el párrafo nuevo en primera persona
-- [x] 8.2 L145 botón → "Escribime por WhatsApp" (link *Home, bloque de Victor*) + link chico "Mi perfil en LinkedIn" → https://www.linkedin.com/in/victor-roman-226bb155/
+- [x] 8.2 L145 botón → "Escribime por WhatsApp" (link *Home, bloque de Victor*) + link chico "Mi perfil en LinkedIn" → https://www.linkedin.com/in/victor-roman-226bb155
 - [x] 8.2 L166-184 borrar "Números que nos respaldan" · **duda C**
 - [x] 8.2 L161 `tel:+595992504620` → `https://wa.me/595992504620`
 - [x] 8.3 L189-227 borrar sección "Por qué GuaraníSoft" + su link del menú (L45)
