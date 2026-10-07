@@ -17,6 +17,7 @@ cp .env.example .env  # edit with real credentials
 - **FastAPI** app with 6 main routes: `/` (corporativa GuaraníSoft), `/nande-erp` (landing producto), `/nande-tienda` (landing Ñande Tienda, e-commerce satélite del ERP — código en `/home/victor/nande-tienda/`), `/contacto`, `/health`, `/admin/leads`
 - **Jinja2** templates: `templates/home.html` (corporativa) + `templates/index.html` (landing Ñande ERP) + `templates/nande-tienda.html` (landing Ñande Tienda)
 - **Bootstrap 5** via CDN + custom CSS (`static/css/landing.css`)
+- **Google Analytics 4** — tag `gtag.js` (ID `G-QWBG8NPSMW`) en `templates/base.html`, una sola vez para las tres páginas
 - **Google Sheets** (primary persistence via gspread)
 - **SQLite** (fallback, local only — not persistent on Render Free)
 - **SMTP** (Gmail, background task with 10s timeout)
