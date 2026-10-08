@@ -378,7 +378,7 @@ apuntan a la URL de cada página, no a la raíz.
 | Medida | Implementación |
 |--------|----------------|
 | Rate limiting | 1 envío por IP cada 60 segundos (en memoria). La marca se reserva junto a la comprobación, sin `await` en el medio, para que dos envíos simultáneos no se cuelen; si el guardado falla se libera, pero solo si todavía es la que reservó esa solicitud |
-| `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503 con o sin cabecera de autenticación (`HTTPBasic(auto_error=False)`, para que la configuración se revise antes que las credenciales) |
+| `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503. Con `HTTPBasic(auto_error=False)` la configuración se revisa antes que las credenciales, así un `curl` sin autenticación distingue 503 (sin configurar) de 401 (configurado) |
 | Comparación de credenciales | `secrets.compare_digest` sobre bytes, los dos campos siempre evaluados (sin fuga por tiempo) |
 | SMTP credentials | Variables de entorno, nunca en código |
 | Cuenta de servicio | `service_account.json` en `.gitignore`; en Render, Secret File en `/etc/secrets/` |
@@ -392,6 +392,12 @@ apuntan a la URL de cada página, no a la raíz.
 > la cabecera `Authorization` como ASCII, así que una clave con ñ o tilde no
 > llega nunca a `verify_admin` y la ruta siempre responde 401, incluso con la
 > clave correcta.
+>
+> Ese 401 lo lanza FastAPI **antes** de la comprobación de configuración, y
+> `auto_error=False` no lo evita: solo convierte en `None` la cabecera ausente y
+> el esquema que no es Basic. Una cabecera Basic malformada (base64 inválido o
+> sin `:`) o no ASCII da 401 aunque las variables falten, así que para distinguir
+> "sin configurar" hay que consultar **sin cabecera de autenticación**.
 
 ---
 

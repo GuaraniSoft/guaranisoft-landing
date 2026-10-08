@@ -42,8 +42,10 @@ RATE_LIMIT_SECONDS = 60
 SMTP_TIMEOUT_SECONDS = 10
 
 # auto_error=False para que la falta de cabecera llegue como None en vez de que
-# FastAPI corte con un 401 antes de que podamos revisar la configuración. Así
-# "sin configurar" se ve siempre como 503, con credenciales o sin ellas.
+# FastAPI corte con un 401 antes de que podamos revisar la configuración: así un
+# curl pelado contra /admin/leads distingue "sin configurar" (503) de
+# "configurado" (401). Ojo que auto_error solo cubre la cabecera ausente y el
+# esquema que no es Basic; ver el comentario de abajo.
 security = HTTPBasic(auto_error=False)
 
 # Configura esto en tu .env: ADMIN_USER y ADMIN_PASSWORD
@@ -58,10 +60,13 @@ def verify_admin(credentials: HTTPBasicCredentials | None = Depends(security)):
             detail="Consulta de leads no configurada (faltan ADMIN_USER y ADMIN_PASSWORD)",
         )
 
-    # credentials es None si no vino la cabecera, o si no se pudo leer — lo que
-    # incluye una clave no ASCII, porque el HTTPBasic de FastAPI decodifica la
-    # cabecera como ASCII. Por eso ADMIN_PASSWORD tiene que ser ASCII: con una ñ
-    # o una tilde esto da 401 incluso con la clave correcta.
+    # credentials es None solo cuando no vino la cabecera Authorization o cuando
+    # su esquema no es Basic: eso es todo lo que auto_error=False convierte en
+    # None. Una cabecera Basic malformada —base64 roto, sin ":"— o con
+    # caracteres no ASCII la corta FastAPI con un 401 propio antes de entrar
+    # acá, así que en esos tres casos no se llega a ver el 503 de arriba.
+    # De ahí también que ADMIN_PASSWORD tenga que ser ASCII: con una ñ o una
+    # tilde da 401 incluso con la clave correcta.
     if credentials is None:
         raise HTTPException(
             status_code=401,

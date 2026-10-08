@@ -86,12 +86,22 @@ Más abajo en la misma pantalla, en **"Environment Variables"**:
 | `SMTP_PASSWORD` | abcd efgh ijkl mnop | App Password de Gmail (ver abajo) |
 | `CONTACT_EMAIL` | contacto@guaranisof.com | Email donde llegan los mensajes del formulario |
 | `ADMIN_USER` | (el que quieras) | Usuario de `/admin/leads` |
-| `ADMIN_PASSWORD` | (una clave larga) | Clave de `/admin/leads`. **Solo caracteres ASCII**: con una ñ o una tilde el navegador no puede mandarla y siempre da 401 |
+| `ADMIN_PASSWORD` | (una clave larga) | Clave de `/admin/leads`. **Solo caracteres ASCII**: FastAPI lee la cabecera de autenticación como ASCII, así que con una ñ o una tilde da 401 incluso con la clave correcta |
 
 Click en **"Add Environment Variable"** por cada una.
 
 Si `ADMIN_USER` o `ADMIN_PASSWORD` faltan, `/admin/leads` responde **503** y no
 deja entrar a nadie. El resto del sitio funciona igual.
+
+Para saber si están configuradas, consultar **sin credenciales**:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' https://guaranisof.com/admin/leads
+# 503 → faltan las variables   ·   401 → están configuradas
+```
+
+Con credenciales la respuesta no sirve para distinguirlo: una cabecera Basic
+malformada o no ASCII da 401 en los dos casos.
 
 ### 5b. Secret File: `service_account.json`
 
