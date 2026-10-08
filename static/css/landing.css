@@ -743,27 +743,6 @@ h1, h2 { font-weight: 700; }
     padding: 88px 0;
 }
 .prueba-social-card { max-width: 1040px; margin: 0 auto; }
-.quien-detras {
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: var(--space-16);
-    align-items: center;
-}
-.quien-avatar {
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    border: 1px solid var(--borde);
-    box-shadow: var(--shadow-md);
-    background: var(--blanco);
-}
-.quien-avatar img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    object-position: center 30%;
-}
 .quien-texto h3 {
     color: var(--gris-texto);
     font-size: var(--text-2xl);
@@ -1113,9 +1092,7 @@ footer a:focus-visible {
     .precios-card { padding: 2rem 1.5rem; }
     .plan-badge { left: 1.5rem; }
     .paso--realce { transform: none; }
-    .quien-detras { grid-template-columns: 1fr; gap: var(--space-6); }
     .quien-texto h3 { font-size: var(--text-xl); }
-    .quien-avatar { max-width: 380px; }
     .pilares-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 480px) {
@@ -1429,22 +1406,6 @@ a.modulo-mini { display: block; color: inherit; }
     .problema-card:hover,
     .feature-card:hover,
     .whatsapp-float:hover { transform: none; }
-}
-
-/* ── Avatar fallback ────────────────────────────────────────────────── */
-.avatar-fallback {
-    display: none;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-md);
-    background: var(--morado);
-    color: #fff;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-xl);
-    letter-spacing: 0.02em;
 }
 
 /* ── Comparativa Antes vs Después ───────────────────────────────────── */
