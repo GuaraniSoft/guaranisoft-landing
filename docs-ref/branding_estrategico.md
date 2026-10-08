@@ -4,6 +4,11 @@
 **Fecha:** Junio 2026
 **Última actualización:** AutoClaw — 2026-06-16
 
+> ⚠️ **Antecedente, no fuente de verdad.** Es de junio de 2026 y conserva las
+> capacidades que se le atribuían al ERP entonces, varias de ellas sin verificar.
+> La identidad visual (colores, logo, tipografía) sigue vigente; **las promesas
+> de funcionalidad, no**. Lo que la landing puede afirmar lo define `content.md`.
+
 ---
 
 # Objetivo
@@ -75,7 +80,7 @@ Uso recomendado:
 
 * ERP paraguayo — no una adaptación de un sistema extranjero
 * Soporte local real — alguien en Paraguay que responde
-* Cumplimiento SIFEN v150 — facturación electrónica completa
+* ~~Cumplimiento SIFEN v150 — facturación electrónica completa~~ → SIFEN se implementa a pedido; no se transmite como función incluida
 * Contabilidad integrada — RG 49/14, Ley 6380, Marangatu
 * Gestión empresarial moderna — interfaz limpia, navegación intuitiva
 * Cercanía con el cliente — relación directa, no call-center
@@ -93,7 +98,9 @@ Uso recomendado:
 
 > El ERP hecho para empresas paraguayas.
 
-> Facturación electrónica SIFEN completa, sin letras chicas.
+> ~~Facturación electrónica SIFEN completa, sin letras chicas.~~
+> **No usar.** SIFEN se cotiza aparte: la promesa de "completa" es justamente la
+> letra chica que `content.md` prohíbe.
 
 > Contabilidad que cumple con la DNIT — no adaptada, diseñada para Paraguay.
 

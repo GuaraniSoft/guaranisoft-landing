@@ -1,6 +1,14 @@
 # Facturación Electrónica (SIFEN)
 
-> Disponible si la empresa tiene activado el módulo **SIFEN**.
+> ⚠️ **Manual del ERP traído como referencia, no base para copy.** Describe las
+> pantallas del módulo SIFEN tal como se documentaron en su momento. Para la
+> landing, SIFEN **no es una función terminada**: se implementa a pedido, con
+> plazo y costo a cotizar, y nunca se presenta como incluida y funcionando
+> (`content.md`, reglas 1 y 6). Nada de este archivo se usa como promesa
+> comercial sin verificarlo ahí primero.
+
+> Disponible si la empresa tiene activado el módulo **SIFEN**, que se implementa
+> a pedido.
 
 SIFEN es el sistema de facturación electrónica de la SET. Este módulo prepara, firma y envía
 los documentos electrónicos (DE) y consulta su estado.

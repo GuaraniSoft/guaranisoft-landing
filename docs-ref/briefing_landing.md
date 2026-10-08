@@ -1,5 +1,11 @@
 # Briefing — Landing Page GuaraniSoft
 
+> ⚠️ **Briefing original, ya superado.** Es el encargo con el que se construyó
+> la primera versión de la landing y conserva stats y promesas que después se
+> bajaron (entre ellas SIFEN y los números de prueba social). La fuente de
+> verdad del copy es `content.md`; el rediseño que corrigió esto está en
+> `propuesta_rediseño_landing.md`.
+
 ## Objetivo
 Crear una landing page para `guaranisof.com` que presente el producto **Ñande ERP** a potenciales clientes paraguayos. El objetivo es que el visitante entienda qué es, confíe en el producto y tome acción (demo o contacto).
 

@@ -182,9 +182,11 @@ de llegar al template.
 Sistema simple en memoria:
 - Diccionario `_last_sent` guarda `{IP: timestamp}`
 - Si la misma IP envía otro formulario antes de 60s, se bloquea
-- La marca se pone **después** de guardar el lead: si el guardado falla, el
-  visitante puede reintentar en el acto en vez de esperar 60s por un mensaje
-  que nunca se guardó
+- La comprobación y la marca van juntas, sin ningún `await` entre las dos: el
+  event loop no puede meter otro envío de la misma IP en el medio y colarse un
+  duplicado
+- Si el guardado falla, se restaura la marca anterior, así el visitante puede
+  reintentar en el acto en vez de esperar 60s por un mensaje que nunca se guardó
 - **Limitación:** se reinicia si la app se reinicia (no persiste)
 - Suficiente para una landing con poco tráfico
 
@@ -196,65 +198,71 @@ Las tres páginas extienden `base.html`, que trae el navbar, el footer, el
 WhatsApp flotante, el tag de Google Analytics 4 y el JS del formulario. Cada
 página define su `{% block content %}` y los bloques de marca y navegación.
 
-`index.html` (Ñande ERP) tiene 7 secciones + navbar + footer + WhatsApp flotante:
+`index.html` (Ñande ERP) tiene 10 secciones, más el navbar, el footer y el
+WhatsApp flotante que hereda de `base.html`:
 
 ```
 index.html
-├── <head> — meta tags, SEO, CSS (Bootstrap + custom)
+├── <head> — meta tags y SEO propios (bloque head_extra de base.html)
 │
-├── Navbar (fixed-top)
-│   ├── Logo (logo-compacto.svg)
-│   └── Links: Features, Cómo funciona, Precios, Contacto, "Solicitar demo"
+├── Navbar (de base.html; fixed-top)
+│   ├── Logo (marca-n.svg + "ande ERP")
+│   └── Links: Por qué Ñande, Módulos, Precios, Contacto,
+│              Ñande Tienda, GuaraníSoft, "Solicitar demo"
 │
-├── Section: Hero (#top)
-│   ├── Logo con eslogan (logo-eslogan.svg)
-│   ├── Tagline: "Hecho en Paraguay. Hecho para Paraguay."
-│   ├── Subtítulo
-│   └── CTAs: Solicitar demo + WhatsApp
+├── Section: Hero (hero-split)
+│   ├── H1: "Controlá tu negocio, aunque se corte internet."
+│   ├── CTAs: Solicitar demo + WhatsApp
+│   └── Imagen: static/img/dashboard.png
 │
-├── Section: Problema/Solución
-│   ├── Columna izquierda: El problema (ERPs extranjeros no sirven)
-│   └── Columna derecha: La solución (hecho en Paraguay)
+├── Section: Pilares (#por-que) — 4 pilares
+│   ├── Diseñado para Paraguay
+│   ├── Sin depender de internet
+│   ├── Control total en un solo lugar
+│   └── Soporte directo del que lo programó
 │
-├── Section: Features (#features) — 9 cards
-│   ├── 📊 Dashboard e Indicadores
-│   ├── 🛒 Ventas y Compras
-│   ├── 📦 Inventario
-│   ├── 🧾 Facturación Electrónica SIFEN
-│   ├── ⚖️ Tributario y Fiscal
-│   ├── 📚 Contabilidad
-│   ├── 💵 Cajas
-│   ├── 🏦 Préstamos
-│   └── 🏢 Multimoneda y Multisucursal
+├── Section: Problemas — "¿Sabés realmente cómo está tu negocio?"
+│
+├── Section: Módulos (#modulos) — 4 cards
+│   ├── Punto de Venta y Facturación
+│   ├── Control de Inventario
+│   ├── Gestión de Cajas
+│   └── Contabilidad Automática
+│
+├── Section: Casos de uso — "Así se usa en tu negocio"
+│   └── Ferretería / varios locales / distribuidora
 │
 ├── Section: Cómo funciona (#como-funciona) — 3 pasos
-│   ├── 1. Solicitás demo
-│   ├── 2. Te instalamos
-│   └── 3. Empezás a usar
+│   ├── 1. Nos conocemos
+│   ├── 2. Instalación en tu computadora
+│   └── 3. Acompañamiento
 │
-├── Section: Stats — 4 números
-│   ├── 96 tablas de datos
-│   ├── 350+ endpoints
-│   ├── 7 tipos de DTE SIFEN
-│   └── 100% cumplimiento Ley 6380
+├── Section: Prueba social — "¿Quién te atiende?"
+│   └── (los testimonios están comentados hasta tener clientes reales)
 │
 ├── Section: Precios (#precios)
-│   └── Card: Licencia única + módulos + "Consultá por precio"
+│   └── "¿Cuánto cuesta? Depende de tu negocio." — se cotiza, sin precio fijo
+│
+├── Section: FAQ (#faq) — acordeón de Bootstrap
 │
 ├── Section: Contacto (#contacto)
-│   ├── Formulario (nombre, empresa, teléfono, email, mensaje)
+│   ├── Aviso sin JS (_aviso_contacto.html, solo si llega ?sent=)
+│   ├── Formulario (nombre, teléfono, mensaje) → POST /contacto
 │   └── Info directa: ventas@, soporte@, WhatsApp, LinkedIn
 │
-├── Footer
-│   ├── Ñande ERP por GuaraníSoft
-│   └── Links: guaranisof.com, contacto@, WhatsApp
+├── Footer (de base.html)
 │
-├── WhatsApp flotante (fixed bottom-right)
+├── WhatsApp flotante (de base.html; fixed bottom-right)
 │
-└── Scripts
+└── Scripts (de base.html)
     ├── Bootstrap 5.3.3 (CDN)
+    ├── initFormularioContacto() + showToast()
     └── IntersectionObserver (fade-in on scroll, sin librerías)
 ```
+
+> La landing **no** promete facturación electrónica SIFEN como función lista:
+> se implementa a pedido, con plazo y costo a cotizar. La regla y la lista
+> completa de lo que no se puede presentar como terminado están en `content.md`.
 
 ---
 
@@ -341,14 +349,22 @@ en `/etc/secrets/` (Secret File de Render). Sin él, los leads van solo al SQLit
 
 ## SEO
 
+Cada página define sus propios meta en el bloque `head_extra`. Los de
+`/nande-erp` (sin mencionar SIFEN, que no es una función terminada):
+
 ```html
-<title>Ñande ERP — ERP paraguayo con facturación electrónica SIFEN | GuaraníSoft</title>
-<meta name="description" content="ERP paraguayo con facturación electrónica SIFEN, cumplimiento tributario Ley 6380 y contabilidad. Hecho en Paraguay por GuaraníSoft.">
-<meta property="og:title" content="Ñande ERP — ERP paraguayo">
-<meta property="og:description" content="Hecho en Paraguay. Hecho para Paraguay. Facturación SIFEN, tributario, contabilidad.">
+<title>Ñande ERP — Punto de Venta, Inventario y Contabilidad | GuaraníSoft</title>
+<meta name="description" content="Sistema de gestión para PyMEs en Paraguay. Punto de venta rápido, control de stock, cajas y contabilidad. Funciona sin internet.">
+<meta property="og:title" content="Ñande ERP — El sistema que ordena tu empresa">
+<meta property="og:description" content="Punto de venta, stock, cajas y contabilidad. Funciona sin internet y te atiende quien lo programó.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://guaranisof.com">
+<meta property="og:url" content="https://guaranisof.com/nande-erp">
+<meta property="og:image" content="https://guaranisof.com/static/img/og-image.png?v=2">
+<link rel="canonical" href="https://guaranisof.com/nande-erp">
 ```
+
+Más un bloque `application/ld+json` por página. `og:url` y el `canonical`
+apuntan a la URL de cada página, no a la raíz.
 
 ---
 
@@ -356,7 +372,7 @@ en `/etc/secrets/` (Secret File de Render). Sin él, los leads van solo al SQLit
 
 | Medida | Implementación |
 |--------|----------------|
-| Rate limiting | 1 envío por IP cada 60 segundos (en memoria), marcado solo si el lead se guardó |
+| Rate limiting | 1 envío por IP cada 60 segundos (en memoria). La marca se pone junto a la comprobación, sin `await` en el medio, para que dos envíos simultáneos no se cuelen; si el guardado falla, se restaura la marca anterior |
 | `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503 |
 | Comparación de credenciales | `secrets.compare_digest` sobre bytes, los dos campos siempre evaluados (sin fuga por tiempo) |
 | SMTP credentials | Variables de entorno, nunca en código |

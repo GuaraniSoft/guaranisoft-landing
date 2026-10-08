@@ -180,12 +180,15 @@ async def contacto(
         mensaje = f"[Usa Ñande ERP: {usa_erp}] {mensaje}"
     client_ip = request.client.host if request.client else "unknown"
 
-    # Rate limit: acá solo se comprueba. La marca se pone más abajo, recién
-    # cuando el lead quedó guardado — si no, un fallo de guardado le bloquearía
-    # el reintento durante 60 segundos.
+    # Rate limit. La comprobación y la marca van juntas, sin ningún await en el
+    # medio: así el event loop no puede meter otro envío de la misma IP entre
+    # las dos y colarse un duplicado. Si después no se puede guardar el lead,
+    # restauramos la marca anterior para no bloquearle el reintento 60s.
     now = time.time()
-    if now - _last_sent[client_ip] < RATE_LIMIT_SECONDS:
+    marca_anterior = _last_sent[client_ip]
+    if now - marca_anterior < RATE_LIMIT_SECONDS:
         return _respuesta_contacto(request, producto, "rate", status_code=429)
+    _last_sent[client_ip] = now
 
     nombre_producto = {"erp": "Ñande ERP", "tienda": "Ñande Tienda", "crm": "Ñande CRM"}[producto]
     body = f"""\
@@ -212,7 +215,8 @@ Mensaje:
 
     if not (sheet_saved or db_saved):
         # No se guardó en ningún lado: no confirmamos un mensaje que perdimos,
-        # y no marcamos el rate limit para que pueda reintentar enseguida.
+        # y devolvemos el rate limit a como estaba para que pueda reintentar ya.
+        _last_sent[client_ip] = marca_anterior
         print(f"[LEAD PERDIDO] {nombre} — {telefono or email or 's/contacto'}: falló Sheets y falló SQLite")
         return _respuesta_contacto(request, producto, "error", status_code=500)
 
@@ -220,8 +224,6 @@ Mensaje:
         print(f"[SHEETS] Lead guardado: {nombre} — {email}")
     else:
         print(f"[SHEETS ERROR] Lead guardado solo en SQLite, que es efímero en Render: {nombre}")
-
-    _last_sent[client_ip] = now
 
     # 3. Aviso por mail: al fondo de la cola, después de responder.
     background.add_task(
