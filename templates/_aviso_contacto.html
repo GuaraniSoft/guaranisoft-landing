@@ -1,0 +1,14 @@
+{# Aviso del formulario para el camino sin JavaScript: /contacto redirige acá
+   con ?sent=ok|rate|error. Con JS la respuesta es JSON y el aviso lo muestra
+   showToast() en base.html, así que este bloque no aparece. #}
+{% if sent %}
+<div class="alert alert-{{ 'success' if sent == 'ok' else 'warning' }} mb-4" role="alert">
+    {% if sent == 'ok' %}
+    ¡Gracias! Recibimos tus datos y te escribimos por WhatsApp a la brevedad.
+    {% elif sent == 'rate' %}
+    Ya enviaste un mensaje. Por favor esperá 60 segundos antes de intentar de nuevo.
+    {% else %}
+    No pudimos guardar tu mensaje. Probá de nuevo o escribinos directo por WhatsApp al +595 992 504 620.
+    {% endif %}
+</div>
+{% endif %}

@@ -130,7 +130,7 @@ function initFormularioContacto(opts) {
         text.classList.add('d-none');
         spinner.classList.remove('d-none');
 
-        fetch('/contacto', { method: 'POST', body: new FormData(form) })
+        fetch('/contacto', { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
             .then(function(r) {
                 if (r.status === 429) {
                     reposar();

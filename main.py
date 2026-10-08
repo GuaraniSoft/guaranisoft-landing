@@ -75,6 +75,34 @@ async def ver_leads(admin: bool = Depends(verify_admin)):
     leads = db.get_all_leads()
     return {"leads": leads}
 
+# ── Respuesta del formulario: JSON para el fetch, redirect para el navegador ─
+# Los formularios tienen method y action, así que sin JavaScript el navegador
+# postea igual. En ese caso no sirve devolverle JSON crudo: lo mandamos de
+# vuelta a la página con ?sent= y ahí se muestra el aviso.
+_PAGINA_PRODUCTO = {"erp": "/nande-erp", "tienda": "/nande-tienda", "crm": "/nande-erp"}
+_ESTADOS_SENT = ("ok", "error", "rate")
+
+
+def _sent_valido(sent: str | None) -> str | None:
+    """Solo los tres estados que produce /contacto; cualquier otra cosa se ignora."""
+    return sent if sent in _ESTADOS_SENT else None
+
+
+def _respuesta_contacto(request: Request, producto: str, estado: str, status_code: int = 200):
+    # El fetch de base.html pide application/json; una navegación normal pide HTML.
+    if "application/json" in request.headers.get("accept", ""):
+        content = {"ok": estado == "ok"}
+        if estado == "rate":
+            content["error"] = "rate_limit"
+        elif estado == "error":
+            content["error"] = "persistencia"
+        return JSONResponse(status_code=status_code, content=content)
+    return RedirectResponse(
+        f"{_PAGINA_PRODUCTO[producto]}?sent={estado}#contacto",
+        status_code=303,
+    )
+
+
 # ── Página principal (corporativa GuaraníSoft) ─────────────────────────────
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -84,13 +112,13 @@ async def home(request: Request):
 # ── Landing Ñande ERP ───────────────────────────────────────────────────────
 @app.get("/nande-erp", response_class=HTMLResponse)
 async def nande_erp(request: Request, sent: str | None = None):
-    return templates.TemplateResponse(request, "index.html", {"sent": sent == "1"})
+    return templates.TemplateResponse(request, "index.html", {"sent": _sent_valido(sent)})
 
 
 # ── Landing Ñande Tienda ───────────────────────────────────────────────────
 @app.get("/nande-tienda", response_class=HTMLResponse)
-async def nande_tienda(request: Request):
-    return templates.TemplateResponse(request, "nande-tienda.html", {})
+async def nande_tienda(request: Request, sent: str | None = None):
+    return templates.TemplateResponse(request, "nande-tienda.html", {"sent": _sent_valido(sent)})
 
 
 # ── Formulario de contacto ─────────────────────────────────────────────────
@@ -157,10 +185,7 @@ async def contacto(
     # el reintento durante 60 segundos.
     now = time.time()
     if now - _last_sent[client_ip] < RATE_LIMIT_SECONDS:
-        return JSONResponse(
-            status_code=429,
-            content={"ok": False, "error": "rate_limit"}
-        )
+        return _respuesta_contacto(request, producto, "rate", status_code=429)
 
     nombre_producto = {"erp": "Ñande ERP", "tienda": "Ñande Tienda", "crm": "Ñande CRM"}[producto]
     body = f"""\
@@ -189,10 +214,7 @@ Mensaje:
         # No se guardó en ningún lado: no confirmamos un mensaje que perdimos,
         # y no marcamos el rate limit para que pueda reintentar enseguida.
         print(f"[LEAD PERDIDO] {nombre} — {telefono or email or 's/contacto'}: falló Sheets y falló SQLite")
-        return JSONResponse(
-            status_code=500,
-            content={"ok": False, "error": "persistencia"}
-        )
+        return _respuesta_contacto(request, producto, "error", status_code=500)
 
     if sheet_saved:
         print(f"[SHEETS] Lead guardado: {nombre} — {email}")
@@ -209,10 +231,7 @@ Mensaje:
         email,
     )
 
-    return JSONResponse(
-        status_code=200,
-        content={"ok": True}
-    )
+    return _respuesta_contacto(request, producto, "ok")
 
 
 # ── Static root files ──────────────────────────────────────────────────────
