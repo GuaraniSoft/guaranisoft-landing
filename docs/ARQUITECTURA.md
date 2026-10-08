@@ -7,7 +7,9 @@
 
 ## Visión general
 
-Landing page pública que presenta el producto Ñande ERP, captura leads mediante un formulario de contacto, y dirige a WhatsApp. Es un proyecto separado del ERP — no comparte código ni base de datos.
+Tres páginas públicas — la corporativa de GuaraníSoft, la landing de Ñande ERP y la de Ñande Tienda — que presentan los productos, capturan leads con un formulario de contacto y dirigen a WhatsApp. Es un proyecto separado del ERP: no comparte código ni base de datos con él.
+
+Los leads se guardan en un Google Sheet (almacén primario) con respaldo en un SQLite local, que en Render Free es efímero y se borra en cada deploy.
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -36,17 +38,21 @@ Landing page pública que presenta el producto Ñande ERP, captura leads mediant
                        ▼
 ┌─────────────────────────────────────────────────────┐
 │              App FastAPI (main.py)                    │
-│  · GET /  → sirve index.html (landing)               │
-│  · POST /contacto → envía email vía SMTP             │
+│  · GET /  → home.html (corporativa)                  │
+│  · GET /nande-erp → index.html                       │
+│  · GET /nande-tienda → nande-tienda.html             │
+│  · POST /contacto → guarda el lead                   │
 │  · GET /health → health check                        │
 └──────────────────────┬──────────────────────────────┘
                        │
                        ▼ (solo si alguien llena el formulario)
 ┌─────────────────────────────────────────────────────┐
-│              Gmail SMTP (smtp.gmail.com:587)          │
-│  · App Password de Google                            │
-│  · Envía email a contacto@guaranisof.com             │
-│  · Cloudflare Email Routing → Gmail de Victor         │
+│   Google Sheets "Leads GuaraníSoft"  (primario)      │
+│  · gspread + service_account.json                    │
+│  · Una pestaña por producto                          │
+│  ├─ SQLite leads.db (respaldo, efímero en Render)    │
+│  └─ Gmail SMTP (aviso, en background, timeout 10s)   │
+│     · Render bloquea el puerto 587: hoy no llega     │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -74,7 +80,7 @@ Landing page pública que presenta el producto Ñande ERP, captura leads mediant
 ## Estructura de archivos
 
 ```
-landing-guaranisoft/
+guaranisoft-landing/
 │
 ├── main.py                      # App FastAPI — rutas + lógica de contacto
 ├── requirements.txt             # Dependencias de Python
@@ -103,10 +109,16 @@ landing-guaranisoft/
 
 | Archivo | Líneas | Descripción |
 |---------|--------|-------------|
-| `main.py` | 107 | App completa (3 rutas) |
-| `templates/index.html` | 380 | Landing completa (7 secciones) |
-| `static/css/landing.css` | 375 | Estilos custom |
-| **Total** | **862** | Proyecto liviano y mantenible |
+| `main.py` | 256 | App completa (8 rutas) |
+| `sheets.py` | 72 | Google Sheets (almacén primario) |
+| `db.py` | 57 | SQLite (respaldo local) |
+| `templates/base.html` | 179 | Layout común: navbar, footer, GA4, JS del formulario |
+| `templates/home.html` | 222 | Corporativa GuaraníSoft |
+| `templates/index.html` | 739 | Landing Ñande ERP |
+| `templates/nande-tienda.html` | 534 | Landing Ñande Tienda |
+| `templates/_aviso_contacto.html` | 14 | Aviso del formulario sin JavaScript |
+| `static/css/landing.css` | 1482 | Estilos custom (CRLF) |
+| **Total** | **~3555** | Proyecto liviano y mantenible |
 
 ---
 
@@ -116,44 +128,75 @@ landing-guaranisoft/
 
 | Método | Path | Función | Descripción |
 |--------|------|---------|-------------|
-| `GET` | `/` | `index()` | Sirve la landing page. Acepta `?sent=1` para mostrar mensaje de éxito |
-| `POST` | `/contacto` | `contacto()` | Procesa el formulario, envía email, redirige |
+| `GET` | `/` | `home()` | Corporativa GuaraníSoft (`home.html`) |
+| `GET` | `/nande-erp` | `nande_erp()` | Landing Ñande ERP (`index.html`). Acepta `?sent=ok\|rate\|error` |
+| `GET` | `/nande-tienda` | `nande_tienda()` | Landing Ñande Tienda. Acepta el mismo `?sent=` |
+| `POST` | `/contacto` | `contacto()` | Procesa el formulario de las tres páginas |
+| `GET` | `/admin/leads` | `ver_leads()` | Lee los leads del SQLite. Basic Auth; **503** si falta configuración |
+| `GET` | `/robots.txt` | `robots()` | Sirve `static/robots.txt` |
+| `GET` | `/sitemap.xml` | `sitemap()` | Sirve `static/sitemap.xml` |
 | `GET` | `/health` | `health()` | Health check para Render. Devuelve `{"status":"ok"}` |
+
+FastAPI además expone `/openapi.json` (el esquema de la API). `/docs` y `/redoc`
+están apagados con `docs_url=None, redoc_url=None`.
 
 ### Flujo del formulario de contacto
 
+Los tres formularios postean a `/contacto`. El campo oculto `producto`
+(`erp` | `tienda` | `crm`) decide la pestaña del Sheet y el asunto del mail.
+
 ```
-1. Usuario llena el formulario en index.html
+1. Usuario llena el formulario (index.html o nande-tienda.html)
    ↓
-2. POST /contacto con: nombre, empresa, telefono, email, mensaje
+2. JS de base.html: fetch POST /contacto con Accept: application/json
+   (sin JS, el form tiene method y action: postea igual, como navegación)
    ↓
 3. Rate limit: ¿pasaron 60s desde el último envío de esta IP?
-   ├── SÍ → redirige a /#contacto?sent=rate
-   └── NO → continúa
+   ├── NO → 429 / ?sent=rate  (la marca NO se consume si el guardado falla)
+   └── SÍ → continúa
    ↓
-4. ¿SMTP_USER y SMTP_PASSWORD configurados?
-   ├── SÍ → envía email vía Gmail SMTP a contacto@guaranisof.com
-   │       (si falla, logea el error pero no rompe)
-   └── NO → salta el envío (modo desarrollo)
+4. Google Sheets (run_in_threadpool, timeout 5/10s) → pestaña del producto
    ↓
-5. Redirige a /?sent=1#contacto
+5. SQLite leads.db (run_in_threadpool) — respaldo, efímero en Render
    ↓
-6. Usuario ve mensaje: "¡Gracias! Tu mensaje fue enviado."
+6. ¿Se guardó en alguno de los dos?
+   ├── NO → 500 {"ok": false, "error": "persistencia"} / ?sent=error
+   │        y NO se marca el rate limit, para que pueda reintentar ya
+   └── SÍ → marca el rate limit y sigue
+   ↓
+7. BackgroundTasks: aviso por mail (Gmail SMTP, timeout 10s)
+   Render bloquea el 587, así que hoy falla y solo queda en el log
+   ↓
+8. Respuesta según el header Accept:
+   ├── application/json → {"ok": true}  → showToast() verde
+   └── text/html        → 303 a /nande-erp?sent=ok#contacto
 ```
+
+El aviso del camino sin JavaScript se renderiza desde el servidor en
+`templates/_aviso_contacto.html`, que las dos landings incluyen arriba del
+formulario. El valor de `sent` se valida contra los tres estados conocidos antes
+de llegar al template.
 
 ### Rate Limiting
 
 Sistema simple en memoria:
 - Diccionario `_last_sent` guarda `{IP: timestamp}`
 - Si la misma IP envía otro formulario antes de 60s, se bloquea
+- La marca se pone **después** de guardar el lead: si el guardado falla, el
+  visitante puede reintentar en el acto en vez de esperar 60s por un mensaje
+  que nunca se guardó
 - **Limitación:** se reinicia si la app se reinicia (no persiste)
 - Suficiente para una landing con poco tráfico
 
 ---
 
-## Estructura del HTML (index.html)
+## Estructura del HTML
 
-Una sola página con 7 secciones + navbar + footer + WhatsApp flotante:
+Las tres páginas extienden `base.html`, que trae el navbar, el footer, el
+WhatsApp flotante, el tag de Google Analytics 4 y el JS del formulario. Cada
+página define su `{% block content %}` y los bloques de marca y navegación.
+
+`index.html` (Ñande ERP) tiene 7 secciones + navbar + footer + WhatsApp flotante:
 
 ```
 index.html
@@ -277,10 +320,22 @@ Todos usan la paleta morado `#5B2A86` + verde `#4A7C59`.
 |----------|-------------|-------------|
 | `SMTP_USER` | Sí (para emails) | Gmail desde donde se envían los emails del formulario |
 | `SMTP_PASSWORD` | Sí (para emails) | App Password de Gmail (16 caracteres) |
-| `CONTACT_EMAIL` | No (default: `contacto@guaranisof.com`) | Email destino donde llegan los mensajes |
+| `CONTACT_EMAIL` | No (default: `ventas@guaranisof.com`) | Email destino donde llegan los mensajes |
+| `ADMIN_USER` | Sí (para `/admin/leads`) | Usuario del Basic Auth de `/admin/leads` |
+| `ADMIN_PASSWORD` | Sí (para `/admin/leads`) | Clave del Basic Auth. **Solo ASCII** (ver Seguridad) |
 | `PORT` | No (default: `8000`) | Puerto. En Render lo setea automáticamente |
+| `RENDER_DATA_DIR` | No (default: la raíz del proyecto) | Directorio donde vive `leads.db` |
 
-**Si `SMTP_USER` o `SMTP_PASSWORD` no están configuradas**, el formulario igual procesa y muestra el mensaje de éxito, pero no se envía ningún email. Útil para desarrollo local.
+**Si `SMTP_USER` o `SMTP_PASSWORD` no están configuradas**, el formulario igual
+guarda el lead y responde éxito, pero no se envía ningún email. Útil para
+desarrollo local.
+
+**Si `ADMIN_USER` o `ADMIN_PASSWORD` no están configuradas**, `/admin/leads`
+responde 503 y no deja entrar a nadie. El resto del sitio funciona igual.
+
+**La cuenta de servicio de Google** no es una variable de entorno: es el archivo
+`service_account.json`, que `sheets.py` busca en la raíz del proyecto (local) y
+en `/etc/secrets/` (Secret File de Render). Sin él, los leads van solo al SQLite.
 
 ---
 
@@ -301,12 +356,21 @@ Todos usan la paleta morado `#5B2A86` + verde `#4A7C59`.
 
 | Medida | Implementación |
 |--------|----------------|
-| Rate limiting | 1 envío por IP cada 60 segundos (en memoria) |
+| Rate limiting | 1 envío por IP cada 60 segundos (en memoria), marcado solo si el lead se guardó |
+| `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503 |
+| Comparación de credenciales | `secrets.compare_digest` sobre bytes, los dos campos siempre evaluados (sin fuga por tiempo) |
 | SMTP credentials | Variables de entorno, nunca en código |
-| Docs deshabilitados | `docs_url=None, redoc_url=None` en FastAPI |
+| Cuenta de servicio | `service_account.json` en `.gitignore`; en Render, Secret File en `/etc/secrets/` |
+| Docs deshabilitados | `docs_url=None, redoc_url=None` en FastAPI (`/openapi.json` sí queda expuesto) |
 | .env en .gitignore | Credenciales nunca se suben a git |
 | Reply-To del formulario | El email del usuario queda como Reply-To |
+| Validación de `?sent=` | Solo `ok`, `rate` y `error`; cualquier otro valor se descarta antes del template |
 | Error handling SMTP | Si falla el envío, se loguea pero no se expone el error al usuario |
+
+> **`ADMIN_PASSWORD` tiene que ser ASCII.** El `HTTPBasic` de FastAPI decodifica
+> la cabecera `Authorization` como ASCII, así que una clave con ñ o tilde no
+> llega nunca a `verify_admin` y la ruta siempre responde 401, incluso con la
+> clave correcta.
 
 ---
 
@@ -326,7 +390,7 @@ Todos usan la paleta morado `#5B2A86` + verde `#4A7C59`.
 ```
 
 - **No comparten código** — son repos separados
-- **No comparten base de datos** — la landing no tiene DB
+- **No comparten base de datos** — la landing solo guarda leads (Google Sheets + un SQLite de respaldo); no toca la base del ERP
 - **Comparten branding** — los SVG se copiaron del ERP a la landing
 - **Comparten dominio** — guaranisof.com es de GuaraníSoft (la empresa)
 - El ERP se deployará después (con Docker) cuando esté listo para demo
@@ -351,7 +415,10 @@ Todos usan la paleta morado `#5B2A86` + verde `#4A7C59`.
 3. Link en el navbar o footer
 
 ### Cambiar el contenido
-Todo el texto está hardcodeado en `templates/index.html`. No hay CMS ni base de datos. Para cambiar algo, editar el HTML y pushear a git — Render hace redeploy automático.
+Todo el texto está hardcodeado en los templates (`home.html`, `index.html`,
+`nande-tienda.html`). No hay CMS: la única base de datos guarda leads. Para
+cambiar algo, editar el HTML y pushear a git — Render hace redeploy automático.
+La fuente de verdad de lo que la landing del ERP puede prometer es `content.md`.
 
 ### Actualizar los logos
 1. Copiar los nuevos SVG del ERP a `static/img/`

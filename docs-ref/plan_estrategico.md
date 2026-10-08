@@ -6,6 +6,11 @@
 **Fecha:** 2026-06-16
 **Aprobado por:** Victor (Owner)
 
+> ⚠️ **Antecedente, no fuente de verdad.** Este plan es de junio de 2026 y
+> conserva las capacidades que se le atribuían al ERP entonces. Lo que la
+> landing puede prometer hoy lo define **`content.md`**, que es más restrictivo.
+> Antes de usar una afirmación de este documento en copy, verificarla ahí.
+
 ---
 
 ## Objetivo Principal
@@ -15,7 +20,7 @@
 ### Por qué este objetivo
 
 - El sistema ya está construido y auditado — el producto existe
-- El diferenciador (SIFEN v150 completo + contabilidad PY real) es genuino y verificable
+- El diferenciador verificable es la **contabilidad PY real** (Ley 6380, Libro IVA, retenciones). La facturación electrónica SIFEN **no** es una función terminada: se implementa a pedido, con plazo y costo a cotizar, y así se habla de ella en la landing (`content.md`)
 - El mercado paraguayo de PyMEs necesita ERPs locales con cumplimiento real
 - Sin posicionamiento activo, el mejor ERP del mundo no se vende
 

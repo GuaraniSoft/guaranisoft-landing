@@ -85,8 +85,29 @@ Más abajo en la misma pantalla, en **"Environment Variables"**:
 | `SMTP_USER` | tu_email@gmail.com | Gmail para enviar emails del formulario |
 | `SMTP_PASSWORD` | abcd efgh ijkl mnop | App Password de Gmail (ver abajo) |
 | `CONTACT_EMAIL` | contacto@guaranisof.com | Email donde llegan los mensajes del formulario |
+| `ADMIN_USER` | (el que quieras) | Usuario de `/admin/leads` |
+| `ADMIN_PASSWORD` | (una clave larga) | Clave de `/admin/leads`. **Solo caracteres ASCII**: con una ñ o una tilde el navegador no puede mandarla y siempre da 401 |
 
 Click en **"Add Environment Variable"** por cada una.
+
+Si `ADMIN_USER` o `ADMIN_PASSWORD` faltan, `/admin/leads` responde **503** y no
+deja entrar a nadie. El resto del sitio funciona igual.
+
+### 5b. Secret File: `service_account.json`
+
+Los leads se guardan en el Google Sheet "Leads GuaraníSoft" con una cuenta de
+servicio de Google Cloud. Ese archivo **no está en el repo** (está en
+`.gitignore`) y en Render se sube aparte:
+
+1. En el servicio, **"Settings" → "Secret Files" → "Add Secret File"**
+2. **Filename:** `service_account.json` (exactamente así)
+3. **Contents:** pegar el JSON completo de la cuenta de servicio
+4. Guardar — Render lo deja en `/etc/secrets/service_account.json`, que es una
+   de las rutas donde `sheets.py` lo busca
+
+El Sheet tiene que estar compartido con el email `client_email` de ese JSON, con
+permiso de edición. Sin el Secret File el formulario sigue respondiendo, pero el
+lead queda solo en el SQLite local, que en Render Free se borra en cada deploy.
 
 ### 6. Deploy
 
@@ -168,14 +189,17 @@ git push -u origin main
 
 ### El build tarda mucho o se queda colgado
 **Causa:** Se subió el `.venv` o `__pycache__` al repo.
-**Solución:** Agregar `.gitignore` y remover del cache:
+**Solución:** Agregar las reglas al `.gitignore` y remover del cache:
 ```bash
-echo '.venv/' > .gitignore
-echo '__pycache__/' >> .gitignore
+printf '.venv/\n__pycache__/\n' >> .gitignore   # OJO: >> agrega, > borra el archivo
 git rm -r --cached .venv __pycache__
 git commit -m "fix: gitignore"
 git push
 ```
+
+> ⚠️ **Siempre `>>`, nunca `>`.** El repo ya trae un `.gitignore` que protege
+> `.env`, `service_account.json` y `leads.db`. Con `>` se borra todo eso y el
+> siguiente commit se lleva las credenciales y los datos de los leads al repo.
 
 ### La app se duerme (cold start de 30+ segundos)
 **Causa:** Plan Free de Render — se duerme tras 15 min sin tráfico.

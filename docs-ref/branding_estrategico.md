@@ -55,10 +55,13 @@ Uso recomendado:
 
 ### Diferenciadores con evidencia
 
+> ⚠️ Esta tabla es de la etapa inicial de la marca y no se puede usar tal cual
+> en copy: lo que la landing puede prometer lo define `content.md`.
+
 | Diferenciador | Evidencia |
 |---------------|-----------|
-| ✅ SIFEN v150 completo | 7/7 tipos de DTE, firma digital RSA+SHA256, lotes SOAP, QR HMAC-SHA256, consulta CDC |
-| ✅ Contabilidad paraguaya real | RG 49/14 (6 anexos), Ley 6380 (IRE/IDU/IRP), exportación Marangatu |
+| ⏳ SIFEN v150 | 7/7 tipos de DTE, firma digital RSA+SHA256, lotes SOAP, QR HMAC-SHA256, consulta CDC. **No es una función terminada:** se implementa a pedido, con plazo y costo a cotizar. Nunca se presenta como incluida y funcionando |
+| ✅ Contabilidad paraguaya real | RG 49/14 (6 anexos), Ley 6380 (IRE/IDU), exportación Marangatu. El **IRP queda afuera**: el liquidador usa tasas planas sin la escala por tramos y está sin terminar |
 | ✅ Soporte local en Paraguay | No es un ERP extranjero adaptado — está construido desde cero para el marco fiscal paraguayo |
 | ✅ Motor contable con doble partida | 321 tests automatizados, 96 tablas, asientos automáticos |
 | ✅ Multi-empresa real | Aislamiento por tenant verificado en 8 fases de testing |
