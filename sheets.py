@@ -17,6 +17,10 @@ WORKSHEET_ERP = "Ñande ERP"
 WORKSHEET_CRM = "Ñande CRM"
 WORKSHEET_TIENDA = "Ñande Tienda"   # crear la pestaña en el Sheet con las mismas columnas
 
+# (conexión, lectura) en segundos. Sin esto, un Sheets lento cuelga el request
+# del formulario sin límite: gspread no trae ningún timeout por defecto.
+SHEETS_TIMEOUT = (5, 10)
+
 # Buscar el JSON en múltiples ubicaciones (local + Render)
 _SA_PATHS = [
     'service_account.json',                    # Local (raíz)
@@ -35,6 +39,7 @@ def _get_worksheet(name):
     """Conecta al Sheet y devuelve la worksheet especificada."""
     sa_path = _get_sa_path()
     gc = gspread.service_account(filename=sa_path)
+    gc.set_timeout(SHEETS_TIMEOUT)
     sh = gc.open(SHEET_NAME)
     try:
         return sh.worksheet(name)
