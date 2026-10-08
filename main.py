@@ -41,10 +41,13 @@ RATE_LIMIT_SECONDS = 60
 # Render bloquea el puerto 587, así que el envío puede colgarse: lo cortamos.
 SMTP_TIMEOUT_SECONDS = 10
 
-security = HTTPBasic()
+# auto_error=False para que la falta de cabecera llegue como None en vez de que
+# FastAPI corte con un 401 antes de que podamos revisar la configuración. Así
+# "sin configurar" se ve siempre como 503, con credenciales o sin ellas.
+security = HTTPBasic(auto_error=False)
 
 # Configura esto en tu .env: ADMIN_USER y ADMIN_PASSWORD
-def verify_admin(credentials: HTTPBasicCredentials = Depends(security)):
+def verify_admin(credentials: HTTPBasicCredentials | None = Depends(security)):
     # Sin credenciales configuradas la ruta no autentica a nadie: no hay
     # usuario y contraseña por defecto que alguien pueda adivinar.
     admin_user = os.getenv("ADMIN_USER", "")
@@ -55,11 +58,20 @@ def verify_admin(credentials: HTTPBasicCredentials = Depends(security)):
             detail="Consulta de leads no configurada (faltan ADMIN_USER y ADMIN_PASSWORD)",
         )
 
+    # credentials es None si no vino la cabecera, o si no se pudo leer — lo que
+    # incluye una clave no ASCII, porque el HTTPBasic de FastAPI decodifica la
+    # cabecera como ASCII. Por eso ADMIN_PASSWORD tiene que ser ASCII: con una ñ
+    # o una tilde esto da 401 incluso con la clave correcta.
+    if credentials is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Falta la autenticación",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
     # En bytes, porque compare_digest sobre str revienta con TypeError si el
-    # texto no es ASCII. Ojo: ADMIN_PASSWORD tiene que ser ASCII igual — el
-    # HTTPBasic de FastAPI decodifica la cabecera como ASCII y una clave con ñ
-    # o tilde nunca llega hasta acá (siempre da 401).
-    # Los dos se evalúan siempre, para no delatar por tiempo cuál de los dos falló.
+    # texto no es ASCII. Los dos se evalúan siempre, para no delatar por tiempo
+    # cuál de los dos falló.
     correct_user = secrets.compare_digest(credentials.username.encode("utf-8"), admin_user.encode("utf-8"))
     correct_pass = secrets.compare_digest(credentials.password.encode("utf-8"), admin_pass.encode("utf-8"))
     if not (correct_user and correct_pass):
@@ -216,7 +228,11 @@ Mensaje:
     if not (sheet_saved or db_saved):
         # No se guardó en ningún lado: no confirmamos un mensaje que perdimos,
         # y devolvemos el rate limit a como estaba para que pueda reintentar ya.
-        _last_sent[client_ip] = marca_anterior
+        # Solo si la marca sigue siendo la nuestra: un guardado que tardó más de
+        # 60s puede haber dejado entrar otro envío, y ese ya puso la suya. Pisarla
+        # con nuestra marca vieja le abriría la puerta a un tercero.
+        if _last_sent[client_ip] == now:
+            _last_sent[client_ip] = marca_anterior
         print(f"[LEAD PERDIDO] {nombre} — {telefono or email or 's/contacto'}: falló Sheets y falló SQLite")
         return _respuesta_contacto(request, producto, "error", status_code=500)
 

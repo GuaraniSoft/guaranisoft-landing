@@ -152,8 +152,8 @@ Los tres formularios postean a `/contacto`. El campo oculto `producto`
    (sin JS, el form tiene method y action: postea igual, como navegación)
    ↓
 3. Rate limit: ¿pasaron 60s desde el último envío de esta IP?
-   ├── NO → 429 / ?sent=rate  (la marca NO se consume si el guardado falla)
-   └── SÍ → continúa
+   ├── NO → 429 / ?sent=rate
+   └── SÍ → reserva la marca acá mismo (sin await en el medio) y continúa
    ↓
 4. Google Sheets (run_in_threadpool, timeout 5/10s) → pestaña del producto
    ↓
@@ -161,8 +161,10 @@ Los tres formularios postean a `/contacto`. El campo oculto `producto`
    ↓
 6. ¿Se guardó en alguno de los dos?
    ├── NO → 500 {"ok": false, "error": "persistencia"} / ?sent=error
-   │        y NO se marca el rate limit, para que pueda reintentar ya
-   └── SÍ → marca el rate limit y sigue
+   │        y libera la marca que reservó, para que pueda reintentar ya —
+   │        pero solo si sigue siendo la suya (un guardado de más de 60s
+   │        puede haber dejado entrar otro envío que ya puso la propia)
+   └── SÍ → deja la marca puesta y sigue
    ↓
 7. BackgroundTasks: aviso por mail (Gmail SMTP, timeout 10s)
    Render bloquea el 587, así que hoy falla y solo queda en el log
@@ -187,6 +189,9 @@ Sistema simple en memoria:
   duplicado
 - Si el guardado falla, se restaura la marca anterior, así el visitante puede
   reintentar en el acto en vez de esperar 60s por un mensaje que nunca se guardó
+- La restauración solo corre si la marca sigue siendo la que reservó esa
+  solicitud: un guardado que tarde más de 60s puede haber dejado entrar otro
+  envío, y pisar su marca con la vieja le abriría la puerta a un tercero
 - **Limitación:** se reinicia si la app se reinicia (no persiste)
 - Suficiente para una landing con poco tráfico
 
@@ -372,8 +377,8 @@ apuntan a la URL de cada página, no a la raíz.
 
 | Medida | Implementación |
 |--------|----------------|
-| Rate limiting | 1 envío por IP cada 60 segundos (en memoria). La marca se pone junto a la comprobación, sin `await` en el medio, para que dos envíos simultáneos no se cuelen; si el guardado falla, se restaura la marca anterior |
-| `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503 |
+| Rate limiting | 1 envío por IP cada 60 segundos (en memoria). La marca se reserva junto a la comprobación, sin `await` en el medio, para que dos envíos simultáneos no se cuelen; si el guardado falla se libera, pero solo si todavía es la que reservó esa solicitud |
+| `/admin/leads` | Basic Auth con `ADMIN_USER` y `ADMIN_PASSWORD`. **Sin valores por defecto**: si faltan, 503 con o sin cabecera de autenticación (`HTTPBasic(auto_error=False)`, para que la configuración se revise antes que las credenciales) |
 | Comparación de credenciales | `secrets.compare_digest` sobre bytes, los dos campos siempre evaluados (sin fuga por tiempo) |
 | SMTP credentials | Variables de entorno, nunca en código |
 | Cuenta de servicio | `service_account.json` en `.gitignore`; en Render, Secret File en `/etc/secrets/` |
